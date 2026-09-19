@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-manb-ms
+  labels:
+    app: app-manb-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-manb-ms
+  template:
+    metadata:
+      labels:
+        app: app-manb-ms
+    spec:
+      containers:
+        - name: app-manb-ms
+          image: mnoskoski/app-manb-ms:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: APP_ENVIRONMENT
+              value: "rancher-local"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 20

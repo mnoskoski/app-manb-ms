@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: app-manb-ms
+  description: FastAPI backend microservice used as a testbed for project-eternum / noskoski-portal integrations
+  annotations:
+    github.com/project-slug: mnoskoski/app-manb-ms
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - python
+    - fastapi
+    - microservice
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/guests
