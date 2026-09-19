@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "app-manb-ms"
 version = "0.1.0"
-description = "FastAPI backend microservice used as a testbed for project-eternum / noskoski-portal integrations"
+description = "FastAPI backend microservice used as a testbed for noskoski-portal (Backstage) integrations"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115",

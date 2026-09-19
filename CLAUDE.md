@@ -2,15 +2,14 @@
 
 Microsserviço FastAPI usado como campo de testes: integração com Backstage
 (`noskoski-portal`), CI/CD para Docker Hub, e deploy num cluster Rancher local. Não é um
-produto — é um laboratório para validar padrões antes de levá-los ao `project-eternum`.
+produto — é um laboratório para validar esses padrões.
 
 ## Arquitetura
 
 - `app/main.py` — cria a `FastAPI` app e inclui os routers.
 - `app/core/config.py` — `Settings` via `pydantic-settings` (env vars com prefixo `APP_`).
 - `app/api/routes/` — um módulo de router por domínio (hoje só `health.py`). Ao crescer, novos
-  domínios entram como novo módulo aqui + `app.include_router(...)` em `main.py` — mesmo padrão
-  de decentralização de rotas usado no `project-eternum`.
+  domínios entram como novo módulo aqui + `app.include_router(...)` em `main.py`.
 - `tests/` — pytest + `TestClient` do FastAPI.
 - `Dockerfile` — build single-stage `python:3.12-slim`, `pip install .` a partir do
   `pyproject.toml` (sem `requirements.txt`).

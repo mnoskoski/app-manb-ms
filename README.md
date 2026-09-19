@@ -1,7 +1,7 @@
 # app-manb-ms
 
 Microsserviço backend em FastAPI — campo de testes para integração com Backstage
-(`noskoski-portal`) e experimentos que depois podem migrar para o `project-eternum`.
+(`noskoski-portal`).
 
 ## Rodando localmente
 

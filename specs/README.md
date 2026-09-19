@@ -9,5 +9,3 @@ Fluxo:
 3. Implemente seguindo o spec; atualize o spec se a implementação divergir.
 4. Specs ficam no repo como histórico de decisão — não apague specs antigos, mesmo depois de
    implementados.
-
-Mesmo padrão usado no project-eternum.

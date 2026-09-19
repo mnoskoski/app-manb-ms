@@ -2,13 +2,13 @@
 
 ## Problema
 Repo novo (`app-manb-ms`), sem estrutura nenhuma. Precisa de uma base de backend FastAPI para
-servir de campo de testes para integrações com o `noskoski-portal` (Backstage) e com o
-`project-eternum`, incluindo deploy num cluster Rancher local.
+servir de campo de testes para integração com o `noskoski-portal` (Backstage), incluindo deploy
+num cluster Rancher local.
 
 ## Proposta
 - FastAPI + Uvicorn, configuração via `pydantic-settings`.
 - Layout `app/` (não `src/`) com `core/` (config) e `api/routes/` (routers por domínio),
-  para crescer por domínio conforme o padrão de decentralização de rotas do project-eternum.
+  para crescer por domínio conforme o serviço ganhar novas funcionalidades.
 - `pyproject.toml` (hatchling) como fonte única de dependências — sem `requirements.txt`.
 - Docker multi-stage simples (`python:3.12-slim`), imagem publicada como
   `mnoskoski/app-manb-ms` no Docker Hub.
