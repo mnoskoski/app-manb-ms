@@ -6,6 +6,8 @@ metadata:
   annotations:
     github.com/project-slug: mnoskoski/app-manb-ms
     backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-id: app-manb-ms
+    backstage.io/kubernetes-namespace: default
   tags:
     - python
     - fastapi

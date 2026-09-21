@@ -4,6 +4,7 @@ metadata:
   name: app-manb-ms
   labels:
     app: app-manb-ms
+    backstage.io/kubernetes-id: app-manb-ms
 spec:
   replicas: 1
   selector:
@@ -13,10 +14,12 @@ spec:
     metadata:
       labels:
         app: app-manb-ms
+        backstage.io/kubernetes-id: app-manb-ms
     spec:
       containers:
         - name: app-manb-ms
-          image: mnoskoski/app-manb-ms:latest
+          image: app-manb-ms:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
           env:
