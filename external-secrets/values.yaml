@@ -1,0 +1,11 @@
+# Helm values for external-secrets/external-secrets (chart 2.11.0, see README.md).
+# Currently just chart defaults, kept as an explicit file so changes are
+# tracked instead of living only in a `helm install --set ...` command.
+#
+# Before using this in a prod-like environment, review at least:
+#   - replicaCount (default 1 per component — no HA)
+#   - resources (default chart has no requests/limits set)
+#   - podDisruptionBudget.enabled
+# against your actual cluster's requirements; none of these are set here yet
+# because this was only validated against a single-node local Rancher Desktop
+# cluster.
