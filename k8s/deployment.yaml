@@ -25,6 +25,12 @@ spec:
           env:
             - name: APP_ENVIRONMENT
               value: "rancher-local"
+            - name: APP_CRM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: crm-api-key
+                  key: API_KEY
+                  optional: true
           readinessProbe:
             httpGet:
               path: /health
