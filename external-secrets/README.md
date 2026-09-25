@@ -26,18 +26,32 @@ kubectl apply -f namespace.yaml
 
 ### 2. IAM — usuário + policy (sem tocar em credencial)
 
+Uma identidade por **cluster** (fronteira de confiança), não por ambiente. Ver
+[`../specs/secrets-naming-convention.md`](../specs/secrets-naming-convention.md)
+pro raciocínio completo.
+
 ```bash
-# dev (padrão):
+# cluster local de laboratório (só dev/*):
 ./bootstrap-iam.sh
 
-# outro ambiente, ex. prod, contra secrets com prefixo prod/*:
-SECRET_PREFIX='prod/*' IAM_USER_NAME='eso-prod-secrets-reader' ./bootstrap-iam.sh
+# cluster on-prem compartilhado por dev/test/uat — uma identidade, 3 prefixos:
+SECRET_PREFIXES='dev/* test/* uat/*' \
+  IAM_USER_NAME='eso-nonprod-secrets-reader' \
+  IAM_POLICY_NAME='ESONonProdSecretsManagerRead' \
+  ./bootstrap-iam.sh
+
+# cluster de prod — identidade própria, nunca reaproveitada:
+SECRET_PREFIXES='prod/*' \
+  IAM_USER_NAME='eso-prod-secrets-reader' \
+  IAM_POLICY_NAME='ESOProdSecretsManagerRead' \
+  ./bootstrap-iam.sh
 ```
 
 Isso cria (ou atualiza, é idempotente) um usuário IAM dedicado com policy
-mínima: `secretsmanager:GetSecretValue` + `DescribeSecret`, escopada ao
-prefixo indicado. Nunca dá `AdministratorAccess` nem reusa outro usuário —
-cada ambiente/cluster tem seu próprio usuário ESO.
+mínima: `secretsmanager:GetSecretValue` + `DescribeSecret`, escopada aos
+prefixos indicados (um ou vários — a policy vira um array de `Resource`).
+Nunca dá `AdministratorAccess` nem reusa outro usuário — cada *cluster* tem
+seu próprio usuário ESO, mesmo que esse cluster rode várias envs.
 
 ### 3. Access key + k8s Secret (manual, de propósito)
 
@@ -87,16 +101,25 @@ Se for replicar em outro ambiente com outro nome de usuário/prefixo, ajuste
 ### 6. Cada app declara seu próprio ExternalSecret
 
 Não mexe nesta pasta — cada app cria seu `ExternalSecret` no próprio
-diretório `k8s/`, referenciando:
+diretório `k8s/`, referenciando o mesmo store e puxando o blob inteiro do
+secret (`dataFrom.extract`, não campo a campo — assim não precisa editar o
+`ExternalSecret` toda vez que uma chave nova entra no JSON da AWS):
 
 ```yaml
 spec:
   secretStoreRef:
     name: aws-secrets-manager
     kind: ClusterSecretStore
+  target:
+    name: <app>-secrets
+    creationPolicy: Owner
+  dataFrom:
+    - extract:
+        key: dev/<project>/<app_name>
 ```
 
-Exemplo real: [`../k8s/external-secrets/external-secret.yaml`](../k8s/external-secrets/external-secret.yaml).
+Exemplo real (formato antigo, campo a campo — ver nota de migração no spec):
+[`../k8s/external-secrets/external-secret.yaml`](../k8s/external-secrets/external-secret.yaml).
 
 ## O que foi validado (cluster local Rancher Desktop)
 
